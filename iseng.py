@@ -2,7 +2,7 @@
 import os
 import csv
 
-FILENAME = ('C:\\Users\Lenovo\OneDrive\Documents\Data\data_nilai.'csv)
+FILENAME = ('C:\\Users\Lenovo\OneDrive\Documents\Data\data_nilai.txt')
 
 def tampilkan_data():
     if not os.path.exists(FILENAME):
