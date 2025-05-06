@@ -1,0 +1,254 @@
+import os
+from siswa import Siswa 
+
+class MenuSiswa:
+    def __init__ (self):
+        self.menu_siswa = ['1. Print data Siswa', 
+                '2. Tambah data Siswa', 
+                '3. Cari data Siswa', 
+                '4. Hapus data Siswa', 
+                '5. Edit data Siswa', 
+                '6. Keluar']
+        self.run_menu()
+
+    def run_menu (self):
+        db_siswa = DbSiswa()
+        while True:
+            os.system ("cls")
+            print ("Selamat datang di menu data Siswa")
+            print ("-----------------------------------")
+            for menu in self.menu_siswa:
+                print (menu)
+            pilihan = input ("Silakan pilih menu ")
+            if pilihan == '1':
+                db_siswa.print_semua_siswa()
+            elif pilihan == '2':
+                NIS = ''
+                while db_siswa.siswa_ada (NIS) or NIS == '':
+                    NIS = input ("NIS siswa/i: ")
+                    if db_siswa.siswa_ada (NIS):
+                        print ("NIS siswa/i sudah terdaftar")
+                nama = input ("masukan nama siswa/i:")
+                kelas = input ("masukan kelas siswa/i")
+                print("====== masukan nilai siswa/i ======")
+                print("*NOTE: hanya masukan angka saja (0 - 100)")
+                print("Tekan enter untuk mengsubmit angka")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel ipa siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        ipa = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel ips siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        ips = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel mtk siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        mtk = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel inggris siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        inggris = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel indonesia siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        indonesia = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel ipa siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        sunda = jawaban
+                        a = False
+                    else:
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                a = True
+                while a == True:
+                    jawaban = int(input ("masukan nilai mapel pkn siswa/i:"))
+                    if 0 <= jawaban <= 100:
+                        pkn = jawaban
+                        a = False
+                    else :
+                        print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                db_siswa.tambah_data_siswa (NIS = NIS, nama = nama, kelas = kelas, ipa = ipa, ips = ips, mtk = mtk, inggris = inggris, indonesia = indonesia, sunda = sunda, pkn = pkn) 
+            elif pilihan == '3':
+                nama = input ("Silakan masukkan NIS siswa yang dicari: ")
+                siswa = db_siswa.cari_data_siswa_by_NIS (NIS)
+                if siswa == None:
+                    print ("Data siswa dengan NIS", nama, "tidak ditemukan.")
+                else:
+                    siswa.print_data()
+            elif pilihan == '4':
+                db_siswa.print_semua_nis_siswa()
+                nama = input ("Silakan masukkan NIS siswa yang akan dihapus datanya: ")
+                db_siswa.hapus_data_siswa_by_NIS (NIS)
+            elif pilihan == '5':
+                nama = input ("Silakan masukkan NIS siswa yang akan diedit: ")
+                db_siswa.edit_data_siswa_by_NIS (NIS)
+            elif pilihan == '6':
+                return
+            else:
+                print ("Anda tidak memasukkan pilihan dengan benar")
+
+            input ("Tekan enter untuk melanjutkan")
+
+class DbSiswa:
+    def __init__ (self):
+        self.db_siswa = []
+
+    def print_semua_siswa (self):
+        for siswa in self.db_siswa:
+            siswa.print_data()
+
+    def print_semua_nis_siswa (self):
+        print ("== Daftar NIS siswa ==")
+        for siswa in self.db_siswa:
+            print (siswa.NIS)
+
+        print ("")
+
+
+    def cari_data_siswa_by_NIS (self, NIS: int):
+        for siswa in self.db_siswa:
+            if siswa.NIS == NIS:
+                return siswa
+
+    def tambah_data_siswa (self, NIS, nama, kelas, ipa, ips, mtk, inggris, indonesia, sunda, pkn):
+        daftar_nama = [siswa.nama for siswa in self.db_siswa]
+        if NIS in daftar_nama:
+            print ("Siswa sudah ada dalam database.")
+        else:
+            siswa = Siswa (NIS, nama, kelas, ipa, ips, mtk, inggris, indonesia, sunda, pkn)
+            self.db_siswa.append (siswa)
+            print ("siswa dengan nama", siswa.nama, "berhasil disimpan.")
+
+    def siswa_ada (self, NIS: str):
+        daftar_NIS = [siswa.NIS for siswa in self.db_siswa]
+        if NIS in daftar_NIS:
+            return True
+
+        return False
+
+    def hapus_data_siswa_by_NIS (self, NIS: str):
+        for siswa in self.db_siswa:
+            if siswa.NIS == NIS:
+                self.db_siswa.remove (siswa)
+                print("Data Siswa dengan NIS", siswa.NIS, "telah dihapus.")
+                return
+
+        print ("Siswa dengan NIS", NIS, "tidak terdaftar dalam database.")
+
+    def edit_data_siswa_by_NIS (self, NIS: str):
+        for siswa in self.db_siswa:
+            if siswa.NIS == NIS:
+                print ("Siswa dengan NIS", NIS, "ditemukan.")
+                edit = True
+                while (edit):
+                    print ("Pilih data yang akan diedit:")
+                    print ("1. Nama")
+                    print ("2. Kelas")
+                    print ("3. nilai")
+                    print ("4. keluar")
+                    pilih = input ("Silakan pilih (1/2/3/4): ")
+                    if pilih == '1':
+                        nama_baru = input ("Silakan masukan nama baru Siswa: ")
+                        siswa.nama = nama_baru
+                    elif pilih == '2':
+                        kelas_baru = input ("Silakan masukan kelas baru Siswa: ")
+                        siswa.kelas = kelas_baru
+                    elif pilih == '3':
+                        print ("Silakan masukan nilai baru Siswa:")
+                        print ("*NOTE: hanya masukan angka saja (0 - 100)")
+                        print ("Tekan enter untuk mengsubmit angka")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel ipa siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.ipa = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel ips siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.ips = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel mtk siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.mtk = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel inggris siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.inggris = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel indonesia siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.indonesia = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel ipa siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.sunda = jawaban
+                                a = False
+                            else:
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                        a = True
+                        while a == True:
+                            jawaban = int(input ("masukan nilai mapel pkn siswa/i:"))
+                            if 0 <= jawaban <= 100:
+                                siswa.pkn = jawaban
+                                a = False
+                            else :
+                                print ("Nilai tidak valid, silakan masukkan nilai antara 0 - 100")
+                    elif pilih == '4':
+                        return
+                    else:
+                        print ("Anda tidak memasukkan pilihan dengan benar.")
+                        print ("Data Siswa tidak berubah.")
+
+                    masih_edit = input ("Apakah Anda masih ingin meng-edit data Siswa? (Y/T): ")
+                    if masih_edit == 'T' or masih_edit == 't':
+                        edit = False
+                        print ("Edit data Siswa selesai.")
+                        siswa.print_data()
+                    elif masih_edit == 'Y' or masih_edit == 'y':
+                        continue
+                    else:
+                        edit = False
+                        print ("Anda tidak memasukkan pilihan dengan benar.")
+                        print ("Edit selesai")
