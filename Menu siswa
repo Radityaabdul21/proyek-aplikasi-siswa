@@ -1,0 +1,23 @@
+import os
+from database import DbSiswa, MenuSiswa
+
+while True:
+    os.system("cls")
+    print("=====================================")
+    print("selamat datang di aplikasi data siswa")
+    print("=====================================")
+    print("1.untuk masuk ke menu data siswa")
+    print("2.untuk keluar")
+    print("=====================================")
+    pilih = input ("masukkan pilihan anda: ")
+    print("")
+    if pilih == '1':
+        menu_siswa = MenuSiswa()
+        continue
+    elif pilih == '2':
+        print("terima kasih telah menggunakan program ini")
+        break
+    else:
+        print("pilihan tidak valid")
+
+    input("tekan enter untuk melanjutkan")
